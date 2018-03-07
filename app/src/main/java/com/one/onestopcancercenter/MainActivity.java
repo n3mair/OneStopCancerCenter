@@ -75,8 +75,41 @@ public class MainActivity extends AppCompatActivity {
 
     public void sinup()
     {
+        final Dialog signupDialog = new Dialog(MainActivity.this);
+        signupDialog.setContentView(R.layout.signupview);
+        signupDialog.setCancelable(false);
 
+        final EditText editText_username = (EditText) signupDialog.findViewById(R.id.editText_username);
+        final EditText pass = (EditText) signupDialog.findViewById(R.id.pass);
+        final EditText re_pass = (EditText) signupDialog.findViewById(R.id.re_pass);
+        final EditText email = (EditText) signupDialog.findViewById(R.id.email);
+        final EditText mobile = (EditText) signupDialog.findViewById(R.id.mobile);
 
+        Button button_signup= (Button) signupDialog.findViewById(R.id.signup_b);
+        button_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO send user name and pass to server in order to mach the cridentils
+                sendSignupRequest(editText_username.getText().toString(),pass.getText().toString(),
+                        re_pass.getText().toString(),email.getText().toString(),mobile.getText().toString());
+
+                //then if server return ok and get the user type also id
+                signupDialog.cancel();
+            }
+        });
+
+        try
+        {
+            signupDialog.show();
+
+        }catch (Exception ex)
+        {
+
+        }
+    }
+
+    void sendSignupRequest(String username,String userpass, String repass, String mail, String phone)
+    {
 
     }
 
