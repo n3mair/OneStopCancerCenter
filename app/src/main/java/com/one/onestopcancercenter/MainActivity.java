@@ -7,13 +7,28 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.one.Models.User;
+import com.one.Server;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
+
+    Server server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        server = new Server(MainActivity.this);
         login();
 
 
@@ -43,10 +59,57 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO send user name and pass to server in order to mach the cridentils
-                sendLoginRequest(textView_username.getText().toString(),password1.getText().toString());
 
+
+                server.login(textView_username.getText().toString(),password1.getText().toString(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                        try {
+                            String res = new String(responseBody, "UTF-8");
+                            Log.i("OK", res);
+                            JSONObject juser = new JSONObject(res);
+                            User user = new User();
+                            user.Id = juser.getInt("Id");
+                            user.UserType = juser.getInt("UserType");
+                            user.UserName = juser.getString("UserName");
+                            Toast.makeText(MainActivity.this,"Welcome "+ user.UserName,Toast.LENGTH_LONG).show();
+                            switch (user.UserType)
+                            {
+                                case 1:
+                                {
+                                    //TODO go to admin activity
+                                    break;
+                                }
+
+                                case 2:
+                                {
+                                    //TODO go to hospital admin activity
+                                    break;
+                                }
+                                case 3:
+                                {
+                                    //TODO go to user activity
+                                    break;
+                                }
+                            }
+                            loginDialog.cancel();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                        Log.i("LoginFailed", "User name or password not correct ");
+                        Toast.makeText(MainActivity.this,"User name or password not correct ",Toast.LENGTH_LONG).show();
+
+                    }
+                });
                 //then if server return ok and get the user type also id
-                loginDialog.cancel();
+
             }
         });
 
@@ -68,10 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void sendLoginRequest(String username,String userpass)
-    {
-
-    }
 
     public void sinup()
     {
@@ -89,9 +148,18 @@ public class MainActivity extends AppCompatActivity {
         button_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO send user name and pass to server in order to mach the cridentils
-                sendSignupRequest(editText_username.getText().toString(),pass.getText().toString(),
-                        re_pass.getText().toString(),email.getText().toString(),mobile.getText().toString());
+                //TODO send user Data to server tobe reg as new user    name and pass to server in order to mach the cridentils
+                if(pass.getText().toString().equals(re_pass.getText().toString()))
+                {
+                    sendSignupRequest(editText_username.getText().toString(),pass.getText().toString(), email.getText().toString(),mobile.getText().toString());
+
+                }
+                else
+                    {
+                        re_pass.setText("");
+                        Toast.makeText(MainActivity.this,"the boooooo is not mached ",Toast.LENGTH_LONG).show();
+
+                    }
 
                 //then if server return ok and get the user type also id
                 signupDialog.cancel();
@@ -108,9 +176,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    void sendSignupRequest(String username,String userpass, String repass, String mail, String phone)
+    void sendSignupRequest(String username,String userpass,  String mail, String phone)
     {
+        User user = new User();
+        user.UserName = username;
+        user.UserType =3;
+        user.UserEmail =mail;
+        user.UserPhone= phone;
+        user.UserPassword =userpass;
+            server.sinUpUser(user, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
+                    String res = null;
+                    try {
+                        res = new String(responseBody, "UTF-8");
+                        Log.i("user created ...", res);
+                        JSONObject juser = new JSONObject(res);
+                        User user = new User();
+                        user.Id = juser.getInt("Id");
+                        user.UserType = juser.getInt("UserType");
+                        user.UserName = juser.getString("UserName");
+                        Toast.makeText(MainActivity.this,"Welcome "+ user.UserName,Toast.LENGTH_LONG).show();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
     }
 
     @Override

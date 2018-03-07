@@ -6,5 +6,6 @@ package com.one.Models;
 
 public class User
 {
-    public int Id;
+    public int Id,UserType;
+    public String UserName,UserPassword,UserEmail,UserPhone;
 }
