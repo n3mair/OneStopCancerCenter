@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 else
                     {
                         re_pass.setText("");
-                        Toast.makeText(MainActivity.this,"the boooooo is not mached ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this,"The password is not identical ",Toast.LENGTH_LONG).show();
 
                     }
 
