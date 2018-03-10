@@ -17,10 +17,10 @@ public class Story {
     {
 
     }
-    public Story(String jsonHospital)
+    public Story(String jsonStory)
     {
         try {
-            JSONObject s = new JSONObject(jsonHospital);
+            JSONObject s = new JSONObject(jsonStory);
             this.Id = s.getInt("Id");
             
             this.StoryUserId = s.getInt("StoryUserId");
