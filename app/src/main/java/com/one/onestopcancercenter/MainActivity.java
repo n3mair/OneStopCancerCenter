@@ -2,6 +2,7 @@ package com.one.onestopcancercenter;
 
 import android.app.Dialog;
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.one.Models.Hospital;
 import com.one.Models.User;
 import com.one.Server;
 
@@ -79,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
                                 case 1:
                                 {
                                     //TODO go to admin activity
+                                    Hospital h = new Hospital();
+                                    h.HospitalName = "new test hospital";
+                                    h.HospitalPhone = "1478520";
+
+                                    Intent hospital = new Intent(MainActivity.this,HospitalActivity.class);
+                                    MainActivity.this.startActivity(hospital);
                                     break;
                                 }
 

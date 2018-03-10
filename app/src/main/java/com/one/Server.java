@@ -35,9 +35,9 @@ public class Server {
         client.setResponseTimeout(30000);
     }
 
-    public void login(String userEmail, String userPassword,AsyncHttpResponseHandler handler)
+    public void login(String userName, String userPassword,AsyncHttpResponseHandler handler)
     {
-        client.get(API_URL+"users/Login?userEmail="+userEmail+"&userPassword="+userPassword,handler);
+        client.get(API_URL+"users/Login?userName="+userName+"&userPassword="+userPassword,handler);
 
     }
 
