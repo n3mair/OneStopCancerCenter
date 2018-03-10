@@ -10,8 +10,8 @@ import org.json.JSONObject;
 public class Story {
 
 
-    public int Id,StoryTime,StoryUserId;
-    public String StoryTitle,StoryDescription;
+    public int Id,StoryUserId;
+    public String StoryTitle,StoryDescription,StoryTime;
 
     public Story()
     {
@@ -22,8 +22,9 @@ public class Story {
         try {
             JSONObject s = new JSONObject(jsonHospital);
             this.Id = s.getInt("Id");
-            this.StoryTime = s.getInt("StoryTime");
+            
             this.StoryUserId = s.getInt("StoryUserId");
+            this.StoryTime = s.getString("StoryTime");
             this.StoryTitle =   s.getString(" StoryTitle");
             this.StoryDescription = s.getString("StoryDescription");
 
