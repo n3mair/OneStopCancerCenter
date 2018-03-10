@@ -17,10 +17,10 @@ public class Cancer {
     {
 
     }
-    public Cancer(String jsonHospital)
+    public Cancer(String jsonCancer)
     {
         try {
-            JSONObject c = new JSONObject(jsonHospital);
+            JSONObject c = new JSONObject(jsonCancer);
             this.Id = c.getInt("Id");
 
             this.CancerName = c.getString(" CancerName");
