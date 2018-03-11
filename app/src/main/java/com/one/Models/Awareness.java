@@ -9,9 +9,9 @@ import org.json.JSONObject;
 
 public class Awareness
 {
-    public int Id, AwareTime;
+    public int Id, AwareHosID;
 
-    public String AwareTitle, AwareDiscription;
+    public String AwareTitle, AwareDiscription, AwareTime;
 
     public Awareness()
     {
@@ -22,9 +22,10 @@ public class Awareness
         try {
             JSONObject a = new JSONObject(jsonAwareness);
             this.Id = a.getInt("Id");
-            this.AwareTime = a.getInt("AwareTime");
+            this.AwareTime = a.getString("AwareTime");
             this.AwareTitle = a.getString(" AwareTitle");
             this.AwareDiscription = a.getString("AwareDiscription");
+            this.AwareHosID = a.getInt("AwareHosID");
 
 
         } catch (JSONException e) {
@@ -38,9 +39,10 @@ public class Awareness
         JSONObject a = new JSONObject();
         try {
             a.put("Id",this.Id);
-            a.put("StoryTime",this.AwareTime);
-            a.put("StoryTitle",this.AwareTitle);
-            a.put("StoryDescription",this.AwareDiscription);
+            a.put("AwareTime",this.AwareTime);
+            a.put("AwareTitle",this.AwareTitle);
+            a.put("AwareDescription",this.AwareDiscription);
+            a.put("AwareHosID",this.AwareHosID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
